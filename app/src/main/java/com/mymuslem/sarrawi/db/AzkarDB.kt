@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Letters::class], version = 5, exportSchema = false)
+@Database(entities = [Letters::class], version = 6, exportSchema = false)
 abstract class AzkarDB : RoomDatabase() {
 
     abstract fun getTypesDao(): ZekerTypesDao
@@ -33,7 +33,7 @@ abstract class AzkarDB : RoomDatabase() {
 //                            "aa.db"
                             "aa.db"
                         )
-                            .fallbackToDestructiveMigration()
+//                            .fallbackToDestructiveMigration()
                             .createFromAsset("database/aa.db")
                             .build()
                     }

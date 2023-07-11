@@ -2,6 +2,7 @@ package com.mymuslem.sarrawi
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.adapter.ZekerTypes_Adapter
 import com.mymuslem.sarrawi.databinding.FragmentFirstBinding
 import com.mymuslem.sarrawi.db.viewModel.ZekerViewModel
+import com.mymuslem.sarrawi.models.FavoriteModel
+import com.mymuslem.sarrawi.models.Letters
 import kotlinx.coroutines.launch
 
 
@@ -45,12 +48,68 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.buttonFirst.setOnClickListener {
-//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-//        }
+
+
 
         setUpRv()
         menu_item()
+        adapterOnClick()
+    }
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun adapterOnClick() {
+
+        zekertypesAdapter.onItemClick = { it: Letters, i: Int ->
+            val fav = FavoriteModel(it.ID, it.Name)
+            // check if item is favorite or not
+
+            if (it.Fav == 0) {
+                zekerViewModel.update_fav(it.ID!!, 1) // update favorite item state
+                zekerViewModel.add_fav(fav) // add item to db
+                Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
+                setUpRv()
+                zekertypesAdapter.notifyDataSetChanged()
+            } else {
+                zekerViewModel.update_fav(it.ID!!, 0) // update favorite item state
+                zekerViewModel.delete_fav(fav) // delete item from db
+                Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
+                setUpRv()
+                zekertypesAdapter.notifyDataSetChanged()
+            }
+
+        }
+
+
+
+
+    }
+
+    private fun setUpRv() = zekerViewModel.viewModelScope.launch {
+
+
+
+        zekerViewModel.getAllZekerTypes().observe(requireActivity()) { listShows ->
+            //     Log.e("tessst",listTvShows.size.toString()+"  adapter")
+            zekertypesAdapter.stateRestorationPolicy= RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+
+            if(binding.recyclerView.adapter == null){
+                zekertypesAdapter.zekerTypes_list = listShows
+                binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                binding.recyclerView.adapter = zekertypesAdapter
+                zekertypesAdapter.notifyDataSetChanged()
+            }else{
+                zekertypesAdapter.notifyDataSetChanged()
+            }
+
+
+        }
+
     }
 
     private fun menu_item() {
@@ -86,31 +145,5 @@ class FirstFragment : Fragment() {
             }
 
         },viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    private fun setUpRv() = zekerViewModel.viewModelScope.launch {
-
-
-
-        zekerViewModel.getAllZekerTypes().observe(requireActivity()) { listTvShows ->
-            //     Log.e("tessst",listTvShows.size.toString()+"  adapter")
-            zekertypesAdapter.stateRestorationPolicy= RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-
-            if(binding.recyclerView.adapter == null){
-                zekertypesAdapter.zekerTypes_list = listTvShows
-                binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                binding.recyclerView.adapter = zekertypesAdapter
-            }
-
-
-        }
-
-    }
-
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

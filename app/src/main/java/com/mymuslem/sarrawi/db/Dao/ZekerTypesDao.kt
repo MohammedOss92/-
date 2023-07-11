@@ -13,6 +13,9 @@ interface ZekerTypesDao {
     @Query("select * from one")
     fun getAllZekerTypesDao(): LiveData<List<Letters>>
 
+    @Query("Update one SET Fav = :state where ID =:ID")
+    suspend fun update_fav(ID:Int,state:Int)
+
 //    @Insert
 //    suspend fun insert_zekerTypes (zekerTypes: ZekerTypes)
 

@@ -1,5 +1,6 @@
 package com.mymuslem.sarrawi.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,22 +8,39 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.mymuslem.sarrawi.R
 import com.mymuslem.sarrawi.databinding.ZekerTypesDeBinding
 import com.mymuslem.sarrawi.models.Letters
 import com.mymuslem.sarrawi.models.ZekerTypes
 
 class ZekerTypes_Adapter(val con: Context):RecyclerView.Adapter<ZekerTypes_Adapter.MyViewHolder>() {
 
-    var onItemClick: ((Int) -> Unit)? = null
+    var onItemClick: ((item:Letters,position:Int) -> Unit)? = null
 //    var onItemClick: ((Int,String) -> Unit)? = null
 
+    @SuppressLint("NotifyDataSetChanged")
     inner class MyViewHolder(val binding: ZekerTypesDeBinding): RecyclerView.ViewHolder(binding.root) {
 
-        init {
-            binding.root.setOnClickListener{
-//                onItemClick?.invoke(msgsTypesModel[layoutPosition].id,msgsTypesModel[layoutPosition].MsgTypes!!)
-                onItemClick?.invoke(zekerTypes_list[layoutPosition]?.ID?:0)
 
+        init {
+
+        }
+
+        fun bind(position: Int) {
+
+            val current_zekerTypes_list = zekerTypes_list[position]
+            binding.apply {
+                titleDoaa.text=current_zekerTypes_list.Name
+
+                if (current_zekerTypes_list?.Fav==0) {
+                    imgFav.setImageResource(R.mipmap.nf)
+                } else {
+                    imgFav.setImageResource(R.mipmap.f)
+                }
+            }
+
+            binding.imgFav.setOnClickListener{
+                onItemClick?.invoke(zekerTypes_list[position], position)
             }
         }
 
@@ -51,11 +69,12 @@ class ZekerTypes_Adapter(val con: Context):RecyclerView.Adapter<ZekerTypes_Adapt
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val current_zekerTypes_list = zekerTypes_list[position]
-        holder.binding.apply {
-            titleDoaa.text=current_zekerTypes_list.Name
-//            tvMsgM.text=current_zekerTypes_list.MessageName
-        }
+
+        holder.bind(position)
+//        holder.binding.apply {
+//            titleDoaa.text=current_zekerTypes_list.Name
+////            tvMsgM.text=current_zekerTypes_list.MessageName
+//        }
     }
 
     override fun getItemCount(): Int {

@@ -1,11 +1,14 @@
 package com.mymuslem.sarrawi
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mymuslem.sarrawi.databinding.ActivityMainBinding
 import com.mymuslem.sarrawi.db.viewModel.ZekerViewModel
 
@@ -14,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     lateinit var viewModel: ZekerViewModel
+    private lateinit var bottomNav : BottomNavigationView
 
     private val zekerViewModel: ZekerViewModel by lazy {
         ViewModelProvider(this,ZekerViewModel.AzkarViewModelFactory(this.application))[ZekerViewModel::class.java]
@@ -26,9 +30,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-
+        bottomNav = findViewById(R.id.bottomNav)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+//        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.firsFragment,R.id.SecondFragment))
+
+        bottomNav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if(destination.id == R.id.SecondFragment || destination.id == R.id.splashFragment  ) {
+
+                bottomNav.visibility = View.GONE
+            } else {
+
+                bottomNav.visibility = View.VISIBLE
+            }
+        }
+
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 
 //        binding.fab.setOnClickListener { view ->

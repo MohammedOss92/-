@@ -32,7 +32,7 @@ class ZekerTypes_Adapter(val con: Context):RecyclerView.Adapter<ZekerTypes_Adapt
             binding.apply {
                 titleDoaa.text=current_zekerTypes_list.Name
 
-                if (current_zekerTypes_list?.Fav==0) {
+                if (current_zekerTypes_list!!.Fav==0) {
                     imgFav.setImageResource(R.mipmap.nf)
                 } else {
                     imgFav.setImageResource(R.mipmap.f)

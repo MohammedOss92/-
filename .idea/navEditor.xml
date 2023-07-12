@@ -50,6 +50,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="favoriteFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-455" />
+                            <option name="y" value="-43" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="splashFragment">
                     <value>
                       <LayoutPositions>
@@ -58,6 +70,15 @@
                             <option name="x" value="-101" />
                             <option name="y" value="-20" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_splashFragment_to_FirstFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

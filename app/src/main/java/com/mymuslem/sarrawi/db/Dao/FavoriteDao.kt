@@ -10,7 +10,7 @@ interface FavoriteDao {
 
     //    @Query("Select * from Favorite_table")
     @Query("select * from Fav order by ID DESC")
-    fun getAllFav(): List<FavoriteModel>
+    suspend fun getAllFav(): List<FavoriteModel>
 
     // delete favorite item from db
     @Delete

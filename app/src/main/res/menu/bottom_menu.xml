@@ -6,7 +6,7 @@
         android:title="الرئيسية" />
 
     <item
-        android:id="@+id/SecondFragment"
+        android:id="@+id/favoriteFragment"
         android:icon="@drawable/ic_favorite"
         android:title="المفصلة" />
 

@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
  */
 class FirstFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    lateinit var _binding: FragmentFirstBinding
     private val binding get() = _binding!!
 
     private val zekerViewModel: ZekerViewModel by lazy {
@@ -60,13 +60,13 @@ class FirstFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+
     }
 
     private fun adapterOnClick() {
 
         zekertypesAdapter.onItemClick = { it: Letters, i: Int ->
-            val fav = FavoriteModel(it.ID, it.Name)
+            val fav = FavoriteModel(it.ID!!, it.Name)
             // check if item is favorite or not
 
             if (it.Fav == 0) {
@@ -74,6 +74,7 @@ class FirstFragment : Fragment() {
                 zekerViewModel.add_fav(fav) // add item to db
                 Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
                 setUpRv()
+
                 zekertypesAdapter.notifyDataSetChanged()
             } else {
                 zekerViewModel.update_fav(it.ID!!, 0) // update favorite item state
@@ -97,9 +98,9 @@ class FirstFragment : Fragment() {
         zekerViewModel.getAllZekerTypes().observe(requireActivity()) { listShows ->
             //     Log.e("tessst",listTvShows.size.toString()+"  adapter")
             zekertypesAdapter.stateRestorationPolicy= RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-
+            zekertypesAdapter.zekerTypes_list = listShows
             if(binding.recyclerView.adapter == null){
-                zekertypesAdapter.zekerTypes_list = listShows
+
                 binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 binding.recyclerView.adapter = zekertypesAdapter
                 zekertypesAdapter.notifyDataSetChanged()

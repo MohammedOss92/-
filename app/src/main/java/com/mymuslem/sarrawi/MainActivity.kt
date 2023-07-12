@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var viewModel: ZekerViewModel
     private lateinit var bottomNav : BottomNavigationView
-
+    var fragment = 1
     private val zekerViewModel: ZekerViewModel by lazy {
         ViewModelProvider(this,ZekerViewModel.AzkarViewModelFactory(this.application))[ZekerViewModel::class.java]
     }
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         bottomNav = findViewById(R.id.bottomNav)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 //        appBarConfiguration = AppBarConfiguration(navController.graph)
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.firsFragment,R.id.SecondFragment))
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.firsFragment,R.id.favoriteFragment))
 
         bottomNav.setupWithNavController(navController)
 

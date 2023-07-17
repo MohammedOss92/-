@@ -7,16 +7,15 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.adapter.ZekerTypes_Adapter
 import com.mymuslem.sarrawi.databinding.FragmentFirstBinding
-import com.mymuslem.sarrawi.db.viewModel.ZekerViewModel
+import com.mymuslem.sarrawi.db.viewModel.ZekerTypesViewModel
 import com.mymuslem.sarrawi.models.FavoriteModel
 import com.mymuslem.sarrawi.models.Letters
 import kotlinx.coroutines.launch
@@ -30,8 +29,8 @@ class FirstFragment : Fragment() {
     lateinit var _binding: FragmentFirstBinding
     private val binding get() = _binding!!
 
-    private val zekerViewModel: ZekerViewModel by lazy {
-        ViewModelProvider(this,ZekerViewModel.AzkarViewModelFactory(requireActivity().application))[ZekerViewModel::class.java]
+    private val zekerTypesViewModel: ZekerTypesViewModel by lazy {
+        ViewModelProvider(this,ZekerTypesViewModel.AzkarViewModelFactory(requireActivity().application))[ZekerTypesViewModel::class.java]
     }
     private val zekertypesAdapter by lazy {  ZekerTypes_Adapter(requireContext()/*isDark*/) }
 
@@ -65,20 +64,25 @@ class FirstFragment : Fragment() {
 
     private fun adapterOnClick() {
 
-        zekertypesAdapter.onItemClick = { it: Letters, i: Int ->
+        zekertypesAdapter.onItemClick = {ID->
+            val direction = FirstFragmentDirections.actionFirsFragmentToFragmentViewPager(ID)
+                findNavController().navigate(direction)
+        }
+
+        zekertypesAdapter.onFavClick = { it: Letters, i: Int ->
             val fav = FavoriteModel(it.ID!!, it.Name)
             // check if item is favorite or not
 
             if (it.Fav == 0) {
-                zekerViewModel.update_fav(it.ID!!, 1) // update favorite item state
-                zekerViewModel.add_fav(fav) // add item to db
+                zekerTypesViewModel.update_fav(it.ID!!, 1) // update favorite item state
+                zekerTypesViewModel.add_fav(fav) // add item to db
                 Toast.makeText(requireContext(), "تم الاضافة الى المفضلة", Toast.LENGTH_SHORT).show()
                 setUpRv()
 
                 zekertypesAdapter.notifyDataSetChanged()
             } else {
-                zekerViewModel.update_fav(it.ID!!, 0) // update favorite item state
-                zekerViewModel.delete_fav(fav) // delete item from db
+                zekerTypesViewModel.update_fav(it.ID!!, 0) // update favorite item state
+                zekerTypesViewModel.delete_fav(fav) // delete item from db
                 Toast.makeText(requireContext(), "تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
                 setUpRv()
                 zekertypesAdapter.notifyDataSetChanged()
@@ -91,11 +95,11 @@ class FirstFragment : Fragment() {
 
     }
 
-    private fun setUpRv() = zekerViewModel.viewModelScope.launch {
+    private fun setUpRv() = zekerTypesViewModel.viewModelScope.launch {
 
 
 
-        zekerViewModel.getAllZekerTypes().observe(requireActivity()) { listShows ->
+        zekerTypesViewModel.getAllZekerTypes().observe(requireActivity()) { listShows ->
             //     Log.e("tessst",listTvShows.size.toString()+"  adapter")
             zekertypesAdapter.stateRestorationPolicy= RecyclerView.Adapter.StateRestorationPolicy.ALLOW
             zekertypesAdapter.zekerTypes_list = listShows

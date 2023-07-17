@@ -8,18 +8,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.mymuslem.sarrawi.db.Dao.FavoriteDao
+import com.mymuslem.sarrawi.db.Dao.ZekerDao
 import com.mymuslem.sarrawi.db.Dao.ZekerTypesDao
 import com.mymuslem.sarrawi.models.FavoriteModel
 import com.mymuslem.sarrawi.models.Letters
 import com.mymuslem.sarrawi.models.ZekerTypes
+import com.mymuslem.sarrawi.models.Zekr
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Letters::class, FavoriteModel::class], version = 7, exportSchema = false)
+@Database(entities = [Letters::class,Zekr::class, FavoriteModel::class], version = 8, exportSchema = false)
 abstract class AzkarDB : RoomDatabase() {
 
     abstract fun getTypesDao(): ZekerTypesDao
+    abstract fun geZekerDao(): ZekerDao
     abstract fun FavoriteDao(): FavoriteDao
 
     companion object {

@@ -14,19 +14,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.adapter.FavoriteAdapter
 import com.mymuslem.sarrawi.databinding.FragmentFavoriteBinding
-import com.mymuslem.sarrawi.db.viewModel.ZekerViewModel
+import com.mymuslem.sarrawi.db.viewModel.ZekerTypesViewModel
 import kotlinx.coroutines.launch
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var _binding: FragmentFavoriteBinding
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val favoriteAdapter by lazy { FavoriteAdapter(requireContext()) }
 
-    private val zekerViewModel: ZekerViewModel by lazy {
+    private val zekerTypesViewModel: ZekerTypesViewModel by lazy {
         ViewModelProvider(this,
-            ZekerViewModel.AzkarViewModelFactory(requireActivity().application))[ZekerViewModel::class.java]
+            ZekerTypesViewModel.AzkarViewModelFactory(requireActivity().application))[ZekerTypesViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -51,9 +51,9 @@ class FavoriteFragment : Fragment() {
     private fun adapterOnClick() {
 
         favoriteAdapter.onItemClick = {
-            zekerViewModel.viewModelScope.launch {
-                zekerViewModel.update_fav(it.ID!!,0) // update item state
-                zekerViewModel.delete_fav(it)
+            zekerTypesViewModel.viewModelScope.launch {
+                zekerTypesViewModel.update_fav(it.ID!!,0) // update item state
+                zekerTypesViewModel.delete_fav(it)
 //                val result = mainRepository.deleteFav(it)   // delete favorite item from db
                 Toast.makeText(requireContext(),"تم الحذف من المفضلة", Toast.LENGTH_SHORT).show()
                 setUpRv()
@@ -64,7 +64,7 @@ class FavoriteFragment : Fragment() {
     }
 
     @SuppressLint("SuspiciousIndentation")
-    private  fun setUpRv() = zekerViewModel.viewModelScope.launch {
+    private  fun setUpRv() = zekerTypesViewModel.viewModelScope.launch {
 
 //        binding.rcMsgTypes.apply {
 //            adapter = msgstypesAdapter
@@ -72,7 +72,7 @@ class FavoriteFragment : Fragment() {
 //        }
 
 
-        zekerViewModel.getFav().observe(viewLifecycleOwner) { listShows ->
+        zekerTypesViewModel.getFav().observe(viewLifecycleOwner) { listShows ->
             //  msgsAdapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.ALLOW
             favoriteAdapter.stateRestorationPolicy= RecyclerView.Adapter.StateRestorationPolicy.ALLOW
 //            msgsAdapter.msgsModel = listShows

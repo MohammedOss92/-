@@ -68,6 +68,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
 
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1' // LifecycleScope
+    implementation 'me.relex:circleindicator:2.1.6'
 
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 }
 

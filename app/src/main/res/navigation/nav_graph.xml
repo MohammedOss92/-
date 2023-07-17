@@ -12,19 +12,14 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_firsFragment_to_fragmentViewPager"
+            app:destination="@id/fragmentViewPager" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.mymuslem.sarrawi.SecondFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/firsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_second"/>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.mymuslem.sarrawi.SplashFragment"
@@ -39,4 +34,13 @@
         android:name="com.mymuslem.sarrawi.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/fragmentViewPager"
+        android:name="com.mymuslem.sarrawi.FragmentViewPager"
+        android:label="fragment_view_pager"
+        tools:layout="@layout/fragment_view_pager" >
+        <argument
+            android:name="typeID"
+            app:argType="integer" />
+    </fragment>
 </navigation>

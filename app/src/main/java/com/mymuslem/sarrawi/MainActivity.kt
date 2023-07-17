@@ -10,17 +10,17 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mymuslem.sarrawi.databinding.ActivityMainBinding
-import com.mymuslem.sarrawi.db.viewModel.ZekerViewModel
+import com.mymuslem.sarrawi.db.viewModel.ZekerTypesViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    lateinit var viewModel: ZekerViewModel
+    lateinit var viewModel: ZekerTypesViewModel
     private lateinit var bottomNav : BottomNavigationView
     var fragment = 1
-    private val zekerViewModel: ZekerViewModel by lazy {
-        ViewModelProvider(this,ZekerViewModel.AzkarViewModelFactory(this.application))[ZekerViewModel::class.java]
+    private val zekerTypesViewModel: ZekerTypesViewModel by lazy {
+        ViewModelProvider(this,ZekerTypesViewModel.AzkarViewModelFactory(this.application))[ZekerTypesViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.SecondFragment || destination.id == R.id.splashFragment  ) {
+            if(destination.id == R.id.SecondFragment || destination.id == R.id.splashFragment||destination.id == R.id.fragmentViewPager  ) {
 
                 bottomNav.visibility = View.GONE
             } else {

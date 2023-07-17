@@ -15,15 +15,17 @@ import com.mymuslem.sarrawi.models.ZekerTypes
 
 class ZekerTypes_Adapter(val con: Context):RecyclerView.Adapter<ZekerTypes_Adapter.MyViewHolder>() {
 
-    var onItemClick: ((item:Letters,position:Int) -> Unit)? = null
+    var onFavClick: ((item:Letters,position:Int) -> Unit)? = null
 //    var onItemClick: ((Int,String) -> Unit)? = null
-
+    var onItemClick: ((Int) -> Unit)? = null
     @SuppressLint("NotifyDataSetChanged")
     inner class MyViewHolder(val binding: ZekerTypesDeBinding): RecyclerView.ViewHolder(binding.root) {
 
 
         init {
-
+            binding.root.setOnClickListener {
+                onItemClick?.invoke(zekerTypes_list[layoutPosition].ID?:0)
+            }
         }
 
         fun bind(position: Int) {
@@ -40,7 +42,7 @@ class ZekerTypes_Adapter(val con: Context):RecyclerView.Adapter<ZekerTypes_Adapt
             }
 
             binding.imgFav.setOnClickListener{
-                onItemClick?.invoke(zekerTypes_list[position], position)
+                onFavClick?.invoke(zekerTypes_list[position], position)
             }
         }
 

@@ -12,7 +12,7 @@ import com.mymuslem.sarrawi.models.FavoriteModel
 import com.mymuslem.sarrawi.models.Letters
 import com.mymuslem.sarrawi.models.ZekerTypes
 
-class ZekerRepository(app:Application) {
+class ZekerTypesRepository(app:Application) {
 
     private var zekerTypesDao:ZekerTypesDao
     private var fav_Dao: FavoriteDao?
@@ -35,7 +35,7 @@ class ZekerRepository(app:Application) {
         fav_Dao?.add_fav(fav)
     }
 
-    suspend fun getAllFav(): List<FavoriteModel>{
+    fun getAllFav(): LiveData<List<FavoriteModel>>{
         Log.e("tessst","entred666")
         return fav_Dao?.getAllFav()!!
     }
@@ -47,6 +47,6 @@ class ZekerRepository(app:Application) {
 
     // update msg_table items favorite state
     suspend fun update_fav(id: Int,state:Int) {
-        zekerTypesDao?.update_fav(id,state)!!
+        zekerTypesDao.update_fav(id,state)
     }
 }

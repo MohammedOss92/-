@@ -52,7 +52,8 @@ class FragmentViewPager : Fragment() {
         zekerViewModel.getAllZeker(argsId).observe(viewLifecycleOwner) { updatedZekerList ->
             zeker_list.clear()
             zeker_list.addAll(updatedZekerList)
-            view_pager2?.currentItem = zeker_list.size
+            view_pager2?.setCurrentItem(zeker_list.size,false)
+//            view_pager2?.currentItem = zeker_list.size
             ind.setViewPager(view_pager2)
 //            ind.createIndicators(updatedZekerList.size)
             adapter.notifyDataSetChanged()

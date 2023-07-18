@@ -1,6 +1,7 @@
 package com.mymuslem.sarrawi
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.adapter.FavoriteAdapter
@@ -28,6 +30,8 @@ class FavoriteFragment : Fragment() {
         ViewModelProvider(this,
             ZekerTypesViewModel.AzkarViewModelFactory(requireActivity().application))[ZekerTypesViewModel::class.java]
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +54,14 @@ class FavoriteFragment : Fragment() {
 
     private fun adapterOnClick() {
 
-        favoriteAdapter.onItemClick = {
+        favoriteAdapter.onItemClick = {ID->
+            val toastText = "تم النقر على العنصر بالرقم:$ID"
+            Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
+            Log.i("MyApp", "lkjjkjkl")
+            setUpRv()
+        }
+
+        favoriteAdapter.del_fav = {
             zekerTypesViewModel.viewModelScope.launch {
                 zekerTypesViewModel.update_fav(it.ID!!,0) // update item state
                 zekerTypesViewModel.delete_fav(it)

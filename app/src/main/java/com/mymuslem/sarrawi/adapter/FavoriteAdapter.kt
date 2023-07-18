@@ -13,16 +13,25 @@ import com.mymuslem.sarrawi.models.FavoriteModel
 
 class FavoriteAdapter(val con: Context): RecyclerView.Adapter<FavoriteAdapter.MyHolder>() {
 
-    var onItemClick: ((fav:FavoriteModel) -> Unit)? = null // pass favorite item on click
+    var del_fav: ((fav:FavoriteModel) -> Unit)? = null // pass favorite item on click
+//    var onItemClick: ((Int) -> Unit)? = null
+    var onItemClick: ((FavoriteModel) -> Unit)? = null
+
 
     @SuppressLint("NotifyDataSetChanged")
     inner class MyHolder(val binding:FavoriteDesignBinding): RecyclerView.ViewHolder(binding.root) {
 
         init{
 
+
+            binding.root.setOnClickListener{
+//                onItemClick?.invoke(zeker_fav_list[layoutPosition].ID?:0)
+                onItemClick?.invoke(zeker_fav_list[layoutPosition])
+            }
+
             binding.imgFavF.setOnClickListener {
 
-                onItemClick?.invoke(zeker_fav_list[adapterPosition])
+                del_fav?.invoke(zeker_fav_list[layoutPosition])
             }
         }
 

@@ -1,6 +1,7 @@
 package com.mymuslem.sarrawi
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
@@ -67,6 +68,7 @@ class FirstFragment : Fragment() {
         zekertypesAdapter.onItemClick = {ID->
             val direction = FirstFragmentDirections.actionFirsFragmentToFragmentViewPager(ID)
                 findNavController().navigate(direction)
+            Log.d("MyApp", "$ID")
         }
 
         zekertypesAdapter.onFavClick = { it: Letters, i: Int ->

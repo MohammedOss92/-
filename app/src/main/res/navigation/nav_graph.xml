@@ -16,11 +16,6 @@
             app:destination="@id/fragmentViewPager" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.mymuslem.sarrawi.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second"/>
-    <fragment
         android:id="@+id/splashFragment"
         android:name="com.mymuslem.sarrawi.SplashFragment"
         android:label="fragment_splash"
@@ -43,4 +38,8 @@
             android:name="typeID"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/secondFragment"
+        android:name="com.mymuslem.sarrawi.SecondFragment"
+        android:label="SecondFragment" />
 </navigation>

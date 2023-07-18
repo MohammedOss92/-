@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.SecondFragment || destination.id == R.id.splashFragment||destination.id == R.id.fragmentViewPager  ) {
+            if( destination.id == R.id.splashFragment|| destination.id == R.id.secondFragment||destination.id == R.id.fragmentViewPager  ) {
 
                 bottomNav.visibility = View.GONE
             } else {

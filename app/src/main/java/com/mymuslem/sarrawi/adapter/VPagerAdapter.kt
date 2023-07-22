@@ -1,7 +1,6 @@
 package com.mymuslem.sarrawi.adapter
 
 import android.graphics.Color
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,13 +31,24 @@ class VPagerAdapter(private var zeker_list:List<Zekr>): RecyclerView.Adapter<VPa
         holder.tv_zeker.text = zekr.Description
         holder.tv_count.text = zekr.couner
         holder.tv_D.text = zekr.hint
-        holder.btn_count.setOnClickListener{
-            counterr++
-            holder.btn_count.setText(Integer.toString(counterr))
-            holder.btn_count.setTextColor(Color.BLUE)
+//        holder.btn_count.setOnClickListener{
+//            counterr++
+//            holder.btn_count.setText(Integer.toString(counterr))
+//            holder.btn_count.setTextColor(Color.BLUE)
+//            0
+//
+//        }
 
-
-        }
+        holder.btn_count.setOnClickListener (View.OnClickListener { v ->
+            if (v === holder.btn_count) {
+                counterr++
+                //textTitle.setText(Integer.toString(counter));
+                holder.btn_count.setText(Integer.toString(counterr))
+                //scoreText.setBackgroundColor(Color.CYAN);
+                holder.btn_count.setTextColor(Color.BLUE)
+                0
+            }
+        })
 
 
     }

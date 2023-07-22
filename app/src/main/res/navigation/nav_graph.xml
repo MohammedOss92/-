@@ -37,9 +37,20 @@
         <argument
             android:name="typeID"
             app:argType="integer" />
+
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
         android:name="com.mymuslem.sarrawi.SecondFragment"
-        android:label="SecondFragment" />
+        android:label="SecondFragment"
+        tools:layout="@layout/fragment_second">
+        <action
+            android:id="@+id/action_secondFragment_to_fragmentViewPager"
+            app:destination="@id/fragmentViewPager" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSetting"
+        android:name="com.mymuslem.sarrawi.FragmentSetting"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

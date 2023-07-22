@@ -33,12 +33,12 @@ class MainActivity : AppCompatActivity() {
         bottomNav = findViewById(R.id.bottomNav)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 //        appBarConfiguration = AppBarConfiguration(navController.graph)
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.firsFragment,R.id.favoriteFragment))
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.firsFragment,R.id.favoriteFragment,R.id.fragmentSetting))
 
         bottomNav.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if( destination.id == R.id.splashFragment|| destination.id == R.id.secondFragment||destination.id == R.id.fragmentViewPager  ) {
+            if( destination.id == R.id.splashFragment||destination.id == R.id.fragmentViewPager  ) {
 
                 bottomNav.visibility = View.GONE
             } else {

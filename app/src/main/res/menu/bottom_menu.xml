@@ -10,5 +10,10 @@
         android:icon="@drawable/ic_favorite"
         android:title="المفصلة" />
 
+    <item
+        android:id="@+id/fragmentSetting"
+        android:icon="@drawable/ic_settings"
+        android:title="الاعدادات" />
+
 
 </menu>

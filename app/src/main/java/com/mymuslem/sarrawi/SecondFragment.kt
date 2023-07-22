@@ -61,10 +61,12 @@ class SecondFragment : Fragment() {
 
     private fun adapterOnClick() {
 
-        favoriteAdapter.onItemClick = {ID->
-            val toastText = "تم النقر على العنصر بالرقم: $ID"
-            Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
-            Log.i("MyApp", "$ID")
+        favoriteAdapter.onItemClick = {tID->
+//            val toastText = "تم النقر على العنصر بالرقم: $ID"
+//            Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
+//            Log.i("MyApp", "$ID")
+            val direction=SecondFragmentDirections.actionSecondFragmentToFragmentViewPager(tID)
+            findNavController().navigate(direction)
 
         }
 

@@ -23,10 +23,12 @@ class FragmentViewPager : Fragment() {
     }
 
     private var argsId = -1
+    private var argId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         argsId= FragmentViewPagerArgs.fromBundle(requireArguments()).typeID
+        argId=FragmentViewPagerArgs.fromBundle(requireArguments()).typeID
     }
 
     override fun onCreateView(
@@ -58,6 +60,8 @@ class FragmentViewPager : Fragment() {
 //            ind.createIndicators(updatedZekerList.size)
             adapter.notifyDataSetChanged()
         }
+
+
 
         return rootView
     }

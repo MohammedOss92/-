@@ -14,8 +14,8 @@ import com.mymuslem.sarrawi.models.FavoriteModel
 class FavoriteAdapter(val con: Context): RecyclerView.Adapter<FavoriteAdapter.MyHolder>() {
 
     var del_fav: ((fav:FavoriteModel) -> Unit)? = null // pass favorite item on click
-//    var onItemClick: ((Int) -> Unit)? = null
-    var onItemClick: ((FavoriteModel) -> Unit)? = null
+    var onItemClick: ((Int) -> Unit)? = null
+//    var onItemClick: ((FavoriteModel) -> Unit)? = null
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -26,7 +26,7 @@ class FavoriteAdapter(val con: Context): RecyclerView.Adapter<FavoriteAdapter.My
 
             binding.root.setOnClickListener{
 //                onItemClick?.invoke(zeker_fav_list[layoutPosition].ID?:0)
-                onItemClick?.invoke(zeker_fav_list[layoutPosition])
+                onItemClick?.invoke(zeker_fav_list[layoutPosition].ID?:0)
             }
 
             binding.imgFavF.setOnClickListener {
@@ -65,7 +65,7 @@ class FavoriteAdapter(val con: Context): RecyclerView.Adapter<FavoriteAdapter.My
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         val current_zeker_fav_list = zeker_fav_list[position]
         holder.binding.apply {
-            gtitleDoaa.text = current_zeker_fav_list.Name
+            favTitleDoaa.text = current_zeker_fav_list.Name
         }
     }
 

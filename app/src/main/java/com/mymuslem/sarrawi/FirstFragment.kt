@@ -1,5 +1,6 @@
 package com.mymuslem.sarrawi
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.adapter.ZekerTypes_Adapter
 import com.mymuslem.sarrawi.databinding.FragmentFirstBinding
+import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
 import com.mymuslem.sarrawi.db.viewModel.ZekerTypesViewModel
 import com.mymuslem.sarrawi.models.FavoriteModel
 import com.mymuslem.sarrawi.models.Letters
@@ -33,7 +35,7 @@ class FirstFragment : Fragment() {
     private val zekerTypesViewModel: ZekerTypesViewModel by lazy {
         ViewModelProvider(this,ZekerTypesViewModel.AzkarViewModelFactory(requireActivity().application))[ZekerTypesViewModel::class.java]
     }
-    private val zekertypesAdapter by lazy {  ZekerTypes_Adapter(requireContext()/*isDark*/) }
+    private val zekertypesAdapter by lazy {  ZekerTypes_Adapter(requireContext(), this/*isDark*/) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,12 +50,17 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        val sharedPref = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
 
         setUpRv()
         menu_item()
         adapterOnClick()
+        var settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+        val fontSize = sharedPref.getInt("font_size", 14)
+        settingsViewModel.fontSize = fontSize
+
+        zekertypesAdapter.notifyDataSetChanged()
     }
 
 

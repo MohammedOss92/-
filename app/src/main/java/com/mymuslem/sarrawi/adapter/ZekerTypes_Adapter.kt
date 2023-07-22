@@ -2,22 +2,29 @@ package com.mymuslem.sarrawi.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.R
 import com.mymuslem.sarrawi.databinding.ZekerTypesDeBinding
+import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
 import com.mymuslem.sarrawi.models.Letters
 import com.mymuslem.sarrawi.models.ZekerTypes
 
-class ZekerTypes_Adapter(val con: Context):RecyclerView.Adapter<ZekerTypes_Adapter.MyViewHolder>() {
+class ZekerTypes_Adapter(val con: Context,private val fragment: Fragment):RecyclerView.Adapter<ZekerTypes_Adapter.MyViewHolder>() {
 
     var onFavClick: ((item:Letters,position:Int) -> Unit)? = null
 //    var onItemClick: ((Int,String) -> Unit)? = null
     var onItemClick: ((Int) -> Unit)? = null
+    var settingsViewModel = ViewModelProvider(fragment).get(SettingsViewModel::class.java)
+
+
     @SuppressLint("NotifyDataSetChanged")
     inner class MyViewHolder(val binding: ZekerTypesDeBinding): RecyclerView.ViewHolder(binding.root) {
 
@@ -33,17 +40,22 @@ class ZekerTypes_Adapter(val con: Context):RecyclerView.Adapter<ZekerTypes_Adapt
             val current_zekerTypes_list = zekerTypes_list[position]
             binding.apply {
                 titleDoaa.text=current_zekerTypes_list.Name
-
+                titleDoaa.textSize = settingsViewModel.fontSize.toFloat()
+                binding.titleDoaa.textSize = settingsViewModel.fontSize.toFloat()
+                titleDoaa.typeface = Typeface.create(settingsViewModel.fontType, Typeface.NORMAL)
                 if (current_zekerTypes_list!!.Fav==0) {
                     imgFav.setImageResource(R.mipmap.nf)
                 } else {
                     imgFav.setImageResource(R.mipmap.f)
                 }
+
             }
 
             binding.imgFav.setOnClickListener{
                 onFavClick?.invoke(zekerTypes_list[position], position)
             }
+
+
         }
 
     }
@@ -82,4 +94,6 @@ class ZekerTypes_Adapter(val con: Context):RecyclerView.Adapter<ZekerTypes_Adapt
     override fun getItemCount(): Int {
         return zekerTypes_list.size
     }
+
+
 }

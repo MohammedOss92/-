@@ -41,4 +41,12 @@
         <item>75</item>
         <item>100</item>
     </string-array>
+
+        <string-array name="font_options">
+            <item>Font Option 1</item>
+            <item>Font Option 2</item>
+            <item>Font Option 3</item>
+            <!-- وأضف المزيد من الخيارات إذا لزم الأمر -->
+        </string-array>
+
 </resources>

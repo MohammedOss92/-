@@ -1,5 +1,6 @@
 package com.mymuslem.sarrawi
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.mymuslem.sarrawi.adapter.VPagerAdapter
+import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
 import com.mymuslem.sarrawi.db.viewModel.ZekerTypesViewModel
 import com.mymuslem.sarrawi.db.viewModel.ZekerViewModel
 import com.mymuslem.sarrawi.models.Zekr
@@ -37,7 +39,7 @@ class FragmentViewPager : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_view_pager, container, false)
         view_pager2 = rootView.findViewById(R.id.ss)
-        val adapter = VPagerAdapter(zeker_list)
+        val adapter = VPagerAdapter(zeker_list,this)
         val ind: CircleIndicator3 = rootView.findViewById(R.id.aa)
 
         view_pager2?.let {
@@ -61,7 +63,13 @@ class FragmentViewPager : Fragment() {
             adapter.notifyDataSetChanged()
         }
 
+        val sharedPref = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
+        var settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+        val fontSize = sharedPref.getInt("font_size", 14)
+        settingsViewModel.fontSize = fontSize
+
+        adapter.notifyDataSetChanged()
 
         return rootView
     }

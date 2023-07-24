@@ -1,5 +1,6 @@
 package com.mymuslem.sarrawi
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +10,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.mymuslem.sarrawi.adapter.TypefaceChangeListener
 import com.mymuslem.sarrawi.databinding.ActivityMainBinding
 import com.mymuslem.sarrawi.db.viewModel.ZekerTypesViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TypefaceChangeListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -60,5 +62,11 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    override fun onTypefaceChanged(typeface: Typeface) {
+        // هنا قم بتنفيذ ما ترغب فيه عند تغيير الخط، مثلاً قم بتحديث الخط في الـ FirstFragment.
+        val firstFragment = supportFragmentManager.findFragmentById(R.id.firsFragment) as? FirstFragment
+        firstFragment?.onTypefaceChanged(typeface)
     }
 }

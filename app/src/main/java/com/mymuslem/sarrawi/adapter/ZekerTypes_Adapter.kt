@@ -23,6 +23,7 @@ class ZekerTypes_Adapter(val con: Context,private val fragment: Fragment):Recycl
 //    var onItemClick: ((Int,String) -> Unit)? = null
     var onItemClick: ((Int) -> Unit)? = null
     var settingsViewModel = ViewModelProvider(fragment).get(SettingsViewModel::class.java)
+    private var selectedTypeface: Typeface = Typeface.DEFAULT // نوع الخط الافتراضي
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -42,12 +43,16 @@ class ZekerTypes_Adapter(val con: Context,private val fragment: Fragment):Recycl
                 titleDoaa.text=current_zekerTypes_list.Name
                 titleDoaa.textSize = settingsViewModel.fontSize.toFloat()
                 binding.titleDoaa.textSize = settingsViewModel.fontSize.toFloat()
-                titleDoaa.typeface = Typeface.create(settingsViewModel.fontType, Typeface.NORMAL)
+//                titleDoaa.typeface = Typeface.create(settingsViewModel.fontType, Typeface.NORMAL)
+
+                binding.titleDoaa.typeface = selectedTypeface
+
                 if (current_zekerTypes_list!!.Fav==0) {
                     imgFav.setImageResource(R.mipmap.nf)
                 } else {
                     imgFav.setImageResource(R.mipmap.f)
                 }
+
 
             }
 
@@ -94,6 +99,9 @@ class ZekerTypes_Adapter(val con: Context,private val fragment: Fragment):Recycl
     override fun getItemCount(): Int {
         return zekerTypes_list.size
     }
-
+    fun setTypeface(typeface: Typeface) {
+        selectedTypeface = typeface
+        notifyDataSetChanged() // أعد رسم الـ RecyclerView عند تغيير الخط
+    }
 
 }

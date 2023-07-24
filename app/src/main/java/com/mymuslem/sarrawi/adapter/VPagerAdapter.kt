@@ -6,13 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.R
+import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
 import com.mymuslem.sarrawi.models.Zekr
 
 
-class VPagerAdapter(private var zeker_list:List<Zekr>): RecyclerView.Adapter<VPagerAdapter.Pager2View>() {
+class VPagerAdapter(private var zeker_list:List<Zekr>,val fragment: Fragment): RecyclerView.Adapter<VPagerAdapter.Pager2View>() {
     var counterr = 0
+    var settingsViewModel = ViewModelProvider(fragment).get(SettingsViewModel::class.java)
+
     inner class Pager2View(itemView: View): RecyclerView.ViewHolder(itemView) {
         var tv_zeker:TextView=itemView.findViewById(R.id.tv_zeker)
         var tv_count:TextView=itemView.findViewById(R.id.tv_count)
@@ -29,6 +34,7 @@ class VPagerAdapter(private var zeker_list:List<Zekr>): RecyclerView.Adapter<VPa
         val zekr: Zekr = zeker_list.get(position)
 //        holder.title.setText(m.getName())
         holder.tv_zeker.text = zekr.Description
+        holder.tv_zeker.textSize = settingsViewModel.fontSize.toFloat()
         holder.tv_count.text = zekr.couner
         holder.tv_D.text = zekr.hint
 //        holder.btn_count.setOnClickListener{

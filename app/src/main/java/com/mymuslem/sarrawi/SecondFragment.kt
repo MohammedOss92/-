@@ -1,7 +1,10 @@
 package com.mymuslem.sarrawi
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Typeface
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.adapter.FavoriteAdapter
 import com.mymuslem.sarrawi.databinding.FragmentSecondBinding
+import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
 import com.mymuslem.sarrawi.db.viewModel.ZekerTypesViewModel
 import kotlinx.coroutines.launch
 
@@ -29,15 +33,23 @@ class SecondFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private var font1: Typeface? = null
+    private var font2: Typeface? = null
+    private var font3: Typeface? = null
+    private var font4: Typeface? = null
+    private var font5: Typeface? = null
+    private var font6: Typeface? = null
+    private var font7: Typeface? = null
+    private var Ffont: Typeface? = null
 
-
-    private val favoriteAdapter by lazy { FavoriteAdapter(requireContext()) }
+    private val favoriteAdapter by lazy { FavoriteAdapter(requireContext(),this,Ffont) }
 
     private val zekerTypesViewModel: ZekerTypesViewModel by lazy {
         ViewModelProvider(this,
             ZekerTypesViewModel.AzkarViewModelFactory(requireActivity().application))[ZekerTypesViewModel::class.java]
     }
 
+    private lateinit var settingsViewModel: SettingsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,11 +63,29 @@ class SecondFragment : Fragment() {
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val sharedPref = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+
+        val fontSize = sharedPref.getInt("font_size", 14)
+        settingsViewModel.fontSize = fontSize
+
+        favoriteAdapter.notifyDataSetChanged()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+        initFonts()
         setUpRv()
         adapterOnClick()
+        specifyFont()
+
+
+
+
     }
 
 
@@ -108,6 +138,39 @@ class SecondFragment : Fragment() {
             Log.e("tessst","enter111")
 
         }
+    }
+
+    private fun initFonts() {
+        font1 = Typeface.createFromAsset(requireContext().assets, "fonts/a.otf")
+        font2 = Typeface.createFromAsset(requireContext().assets, "fonts/ab.otf")
+        font3 = Typeface.createFromAsset(requireContext().assets, "fonts/ac.otf")
+        font4 = Typeface.createFromAsset(requireContext().assets, "fonts/ad.otf")
+        font5 = Typeface.createFromAsset(requireContext().assets, "fonts/ae.otf")
+        font6 = Typeface.createFromAsset(requireContext().assets, "fonts/af.otf")
+        font7 = Typeface.createFromAsset(requireContext().assets, "fonts/ag.otf")
+    }
+
+
+    private fun specifyFont() {
+        val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val fontIndex = sp.getInt("font", 0) // استخراج رقم الخط المحدد
+
+        Ffont = when (fontIndex) {
+            0 -> font1
+            1 -> font2
+            2 -> font3
+            3 -> font4
+            4 -> font5
+            5 -> font6
+            6 -> font7
+            else -> font1
+        }
+
+        favoriteAdapter?.setFont(Ffont)
+        favoriteAdapter?.notifyDataSetChanged()
+        val editor = sp.edit()
+        editor.putInt("font", fontIndex)
+        editor.apply()
     }
 
 }

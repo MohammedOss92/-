@@ -17,7 +17,7 @@ import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
 import com.mymuslem.sarrawi.models.Letters
 import com.mymuslem.sarrawi.models.ZekerTypes
 
-class ZekerTypes_Adapter(val con: Context,private val fragment: Fragment):RecyclerView.Adapter<ZekerTypes_Adapter.MyViewHolder>() {
+class ZekerTypes_Adapter(val con: Context,private val fragment: Fragment,var fontFamily: Typeface?=null):RecyclerView.Adapter<ZekerTypes_Adapter.MyViewHolder>() {
 
     var onFavClick: ((item:Letters,position:Int) -> Unit)? = null
 //    var onItemClick: ((Int,String) -> Unit)? = null
@@ -53,8 +53,11 @@ class ZekerTypes_Adapter(val con: Context,private val fragment: Fragment):Recycl
                     imgFav.setImageResource(R.mipmap.f)
                 }
 
-
+                fontFamily?.let {
+                    titleDoaa.typeface = it
+                }
             }
+
 
             binding.imgFav.setOnClickListener{
                 onFavClick?.invoke(zekerTypes_list[position], position)
@@ -99,9 +102,9 @@ class ZekerTypes_Adapter(val con: Context,private val fragment: Fragment):Recycl
     override fun getItemCount(): Int {
         return zekerTypes_list.size
     }
-    fun setTypeface(typeface: Typeface) {
-        selectedTypeface = typeface
-        notifyDataSetChanged() // أعد رسم الـ RecyclerView عند تغيير الخط
+    fun setFont(font: Typeface?) {
+        this.fontFamily = font
+        notifyDataSetChanged()
     }
 
 }

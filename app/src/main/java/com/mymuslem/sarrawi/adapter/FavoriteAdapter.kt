@@ -2,20 +2,26 @@ package com.mymuslem.sarrawi.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.R
 import com.mymuslem.sarrawi.databinding.FavoriteDesignBinding
+import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
 import com.mymuslem.sarrawi.models.FavoriteModel
 
-class FavoriteAdapter(val con: Context): RecyclerView.Adapter<FavoriteAdapter.MyHolder>() {
+class FavoriteAdapter(val con: Context,fragment:Fragment,var fontFamily: Typeface?=null): RecyclerView.Adapter<FavoriteAdapter.MyHolder>() {
 
     var del_fav: ((fav:FavoriteModel) -> Unit)? = null // pass favorite item on click
     var onItemClick: ((Int) -> Unit)? = null
 //    var onItemClick: ((FavoriteModel) -> Unit)? = null
+    var settingsViewModel = ViewModelProvider(fragment).get(SettingsViewModel::class.java)
+    private var selectedTypeface: Typeface = Typeface.DEFAULT // نوع الخط الافتراضي
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -66,10 +72,23 @@ class FavoriteAdapter(val con: Context): RecyclerView.Adapter<FavoriteAdapter.My
         val current_zeker_fav_list = zeker_fav_list[position]
         holder.binding.apply {
             favTitleDoaa.text = current_zeker_fav_list.Name
+            favTitleDoaa.textSize = settingsViewModel.fontSize.toFloat()
+            favTitleDoaa.textSize = settingsViewModel.fontSize.toFloat()
+
+            fontFamily?.let {
+                favTitleDoaa.typeface = it
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return zeker_fav_list.size
     }
+
+    fun setFont(font: Typeface?) {
+        this.fontFamily = font
+        notifyDataSetChanged()
+    }
+
+
 }

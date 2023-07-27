@@ -10,6 +10,15 @@ import android.graphics.Typeface
 class SettingsViewModel(application: Application): AndroidViewModel(application) {
     var fontSize: Int = 20 // قيمة افتراضية لحجم الخط
 
+    private var selectedFontPosition = 0
+
+    fun getSelectedFontPosition(): Int {
+        return selectedFontPosition
+    }
+
+    fun setSelectedFontPosition(position: Int) {
+        selectedFontPosition = position
+    }
 
 
 

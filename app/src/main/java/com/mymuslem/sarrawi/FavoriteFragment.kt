@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mymuslem.sarrawi.adapter.FavoriteAdapter
 import com.mymuslem.sarrawi.databinding.FragmentFavoriteBinding
+import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
 import com.mymuslem.sarrawi.db.viewModel.ZekerTypesViewModel
 import kotlinx.coroutines.launch
 
@@ -24,13 +25,14 @@ class FavoriteFragment : Fragment() {
     private lateinit var _binding: FragmentFavoriteBinding
     private val binding get() = _binding
 
-    private val favoriteAdapter by lazy { FavoriteAdapter(requireContext()) }
+    private val favoriteAdapter by lazy { FavoriteAdapter(requireContext(),this) }
 
     private val zekerTypesViewModel: ZekerTypesViewModel by lazy {
         ViewModelProvider(this,
             ZekerTypesViewModel.AzkarViewModelFactory(requireActivity().application))[ZekerTypesViewModel::class.java]
     }
 
+    private lateinit var settingsViewModel: SettingsViewModel
 
 
     override fun onCreateView(
@@ -43,6 +45,18 @@ class FavoriteFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val sharedPref = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+
+        val fontSize = sharedPref.getInt("font_size", 14)
+        settingsViewModel.fontSize = fontSize
+
+        favoriteAdapter.notifyDataSetChanged()
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

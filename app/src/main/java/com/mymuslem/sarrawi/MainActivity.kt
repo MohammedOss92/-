@@ -14,7 +14,7 @@ import com.mymuslem.sarrawi.adapter.TypefaceChangeListener
 import com.mymuslem.sarrawi.databinding.ActivityMainBinding
 import com.mymuslem.sarrawi.db.viewModel.ZekerTypesViewModel
 
-class MainActivity : AppCompatActivity(), TypefaceChangeListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -64,9 +64,5 @@ class MainActivity : AppCompatActivity(), TypefaceChangeListener {
                 || super.onSupportNavigateUp()
     }
 
-    override fun onTypefaceChanged(typeface: Typeface) {
-        // هنا قم بتنفيذ ما ترغب فيه عند تغيير الخط، مثلاً قم بتحديث الخط في الـ FirstFragment.
-        val firstFragment = supportFragmentManager.findFragmentById(R.id.firsFragment) as? FirstFragment
-        firstFragment?.onTypefaceChanged(typeface)
-    }
+
 }

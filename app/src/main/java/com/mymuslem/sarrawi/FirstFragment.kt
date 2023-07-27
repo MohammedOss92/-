@@ -3,6 +3,7 @@ package com.mymuslem.sarrawi
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -29,18 +30,23 @@ import kotlinx.coroutines.launch
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment(),TypefaceChangeListener {
+class FirstFragment : Fragment() {
 
     lateinit var _binding: FragmentFirstBinding
     private val binding get() = _binding!!
-
+    private var font1: Typeface? = null
+    private var font2: Typeface? = null
+    private var font3: Typeface? = null
+    private var font4: Typeface? = null
+    private var font5: Typeface? = null
+    private var font6: Typeface? = null
+    private var font7: Typeface? = null
+    private var Ffont: Typeface? = null
     private val zekerTypesViewModel: ZekerTypesViewModel by lazy {
         ViewModelProvider(this,ZekerTypesViewModel.AzkarViewModelFactory(requireActivity().application))[ZekerTypesViewModel::class.java]
     }
-    private val zekertypesAdapter by lazy {  ZekerTypes_Adapter(requireContext(), this/*isDark*/) }
-//    val settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+    private val zekertypesAdapter by lazy {  ZekerTypes_Adapter(requireContext(), this,Ffont/*isDark*/) }
 
-    // تحريك هذا الجزء إلى داخل onCreateView()
     private lateinit var settingsViewModel: SettingsViewModel
 
     override fun onCreateView(
@@ -60,9 +66,7 @@ class FirstFragment : Fragment(),TypefaceChangeListener {
 
         val fontSize = sharedPref.getInt("font_size", 14)
         settingsViewModel.fontSize = fontSize
-        settingsViewModel.selectedTypeface.observe(viewLifecycleOwner) { typeface ->
-            zekertypesAdapter.setTypeface(typeface)
-        }
+
         zekertypesAdapter.notifyDataSetChanged()
     }
 
@@ -71,30 +75,16 @@ class FirstFragment : Fragment(),TypefaceChangeListener {
 
 
         settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
-
+        initFonts()
         setUpRv()
         menu_item()
         adapterOnClick()
+        specifyFont()
 
-//        val fontSize = sharedPref.getInt("font_size", 14)
-//        settingsViewModel.fontSize = fontSize
-//        settingsViewModel.selectedTypeface.observe(viewLifecycleOwner) { typeface ->
-//            zekertypesAdapter.setTypeface(typeface)
-//        }
-//        zekertypesAdapter.notifyDataSetChanged()
     }
 
 
-//    private fun getSelectedTypeface(selectedOption: Int): Typeface {
-//        return when (selectedOption) {
-//            0 -> Typeface.DEFAULT // Replace with the default typeface if needed
-//            1 -> Typeface.createFromAsset(requireContext().assets, "fonts/your_font_1.ttf")
-//            2 -> Typeface.createFromAsset(requireContext().assets, "fonts/your_font_2.ttf")
-//            3 -> Typeface.createFromAsset(requireContext().assets, "fonts/your_font_3.ttf")
-//            // Add more cases as needed for additional font options
-//            else -> Typeface.DEFAULT // Default typeface if the selectedOption is out of range
-//        }
-//    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
@@ -191,25 +181,37 @@ class FirstFragment : Fragment(),TypefaceChangeListener {
         },viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun getSelectedTypeface(selectedOption: Int): Typeface {
-        return when (selectedOption) {
-            0 -> Typeface.DEFAULT // Replace with the default typeface if needed
-            1 -> Typeface.createFromAsset(requireContext().assets, "fonts/your_font_1.ttf")
-            2 -> Typeface.createFromAsset(requireContext().assets, "fonts/your_font_2.ttf")
-            3 -> Typeface.createFromAsset(requireContext().assets, "fonts/your_font_3.ttf")
-            // Add more cases as needed for additional font options
-            else -> Typeface.DEFAULT // Default typeface if the selectedOption is out of range
+    private fun initFonts() {
+        font1 = Typeface.createFromAsset(requireContext().assets, "fonts/a.otf")
+        font2 = Typeface.createFromAsset(requireContext().assets, "fonts/ab.otf")
+        font3 = Typeface.createFromAsset(requireContext().assets, "fonts/ac.otf")
+        font4 = Typeface.createFromAsset(requireContext().assets, "fonts/ad.otf")
+        font5 = Typeface.createFromAsset(requireContext().assets, "fonts/ae.otf")
+        font6 = Typeface.createFromAsset(requireContext().assets, "fonts/af.otf")
+        font7 = Typeface.createFromAsset(requireContext().assets, "fonts/ag.otf")
+    }
+
+
+    private fun specifyFont() {
+        val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val fontIndex = sp.getInt("font", 0) // استخراج رقم الخط المحدد
+
+        Ffont = when (fontIndex) {
+            0 -> font1
+            1 -> font2
+            2 -> font3
+            3 -> font4
+            4 -> font5
+            5 -> font6
+            6 -> font7
+            else -> font1
         }
+
+        zekertypesAdapter?.setFont(Ffont)
+        zekertypesAdapter?.notifyDataSetChanged()
+        val editor = sp.edit()
+        editor.putInt("font", fontIndex)
+        editor.apply()
     }
 
-    override fun onTypefaceChanged(typeface: Typeface) {
-        zekertypesAdapter.setTypeface(typeface)
-
-        // تحديث قيمة حجم الخط في SharedPreferences بناءً على الخط الجديد
-        val sharedPref = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        val fontSize = sharedPref.getInt("font_size", 14)
-        settingsViewModel.fontSize = fontSize
-        zekertypesAdapter.notifyDataSetChanged()
-
-    }
 }

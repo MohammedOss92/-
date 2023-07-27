@@ -1,6 +1,8 @@
 package com.mymuslem.sarrawi.adapter
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +16,10 @@ import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
 import com.mymuslem.sarrawi.models.Zekr
 
 
-class VPagerAdapter(private var zeker_list:List<Zekr>,val fragment: Fragment): RecyclerView.Adapter<VPagerAdapter.Pager2View>() {
+class VPagerAdapter(val con: Context, private var zeker_list:List<Zekr>, val fragment: Fragment, var fontFamily: Typeface?=null): RecyclerView.Adapter<VPagerAdapter.Pager2View>() {
     var counterr = 0
     var settingsViewModel = ViewModelProvider(fragment).get(SettingsViewModel::class.java)
+    private var selectedTypeface: Typeface = Typeface.DEFAULT // نوع الخط الافتراضي
 
     inner class Pager2View(itemView: View): RecyclerView.ViewHolder(itemView) {
         var tv_zeker:TextView=itemView.findViewById(R.id.tv_zeker)
@@ -37,6 +40,10 @@ class VPagerAdapter(private var zeker_list:List<Zekr>,val fragment: Fragment): R
         holder.tv_zeker.textSize = settingsViewModel.fontSize.toFloat()
         holder.tv_count.text = zekr.couner
         holder.tv_D.text = zekr.hint
+        holder.tv_zeker.typeface = selectedTypeface
+        fontFamily?.let {
+            holder.tv_zeker.typeface = it
+        }
 //        holder.btn_count.setOnClickListener{
 //            counterr++
 //            holder.btn_count.setText(Integer.toString(counterr))
@@ -65,6 +72,11 @@ class VPagerAdapter(private var zeker_list:List<Zekr>,val fragment: Fragment): R
 
     fun updateData(newZekerList: List<Zekr>) {
         zeker_list = newZekerList
+        notifyDataSetChanged()
+    }
+
+    fun setFont(font: Typeface?) {
+        this.fontFamily = font
         notifyDataSetChanged()
     }
 }

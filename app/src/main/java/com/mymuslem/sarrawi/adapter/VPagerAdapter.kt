@@ -3,11 +3,13 @@ package com.mymuslem.sarrawi.adapter
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +19,7 @@ import com.mymuslem.sarrawi.models.Zekr
 
 
 class VPagerAdapter(val con: Context, private var zeker_list:List<Zekr>, val fragment: Fragment, var fontFamily: Typeface?=null): RecyclerView.Adapter<VPagerAdapter.Pager2View>() {
-    var counterr = 0
+
     var settingsViewModel = ViewModelProvider(fragment).get(SettingsViewModel::class.java)
     private var selectedTypeface: Typeface = Typeface.DEFAULT // نوع الخط الافتراضي
 
@@ -52,16 +54,29 @@ class VPagerAdapter(val con: Context, private var zeker_list:List<Zekr>, val fra
 //
 //        }
 
-        holder.btn_count.setOnClickListener (View.OnClickListener { v ->
-            if (v === holder.btn_count) {
+        var counterr = 0 // تعيين المتغير الذي يحمل قيمة العداد
+        val number = convertWordToNumber(holder.tv_count.text.toString()) // تحويل النص إلى رقم
+
+        holder.btn_count.setOnClickListener { v ->
+            if (counterr < number) {
+                // زيادة العداد بمقدار واحد في كل نقرة على الزر حتى يصل إلى العدد المكتوب
                 counterr++
-                //textTitle.setText(Integer.toString(counter));
-                holder.btn_count.setText(Integer.toString(counterr))
-                //scoreText.setBackgroundColor(Color.CYAN);
+
+                // قم بأداء الإجراءات التي ترغب فيها هنا، مثل النقر على الزر
+                // يمكنك استدعاء الدالة التي تتعامل مع النقر على الزر هنا
+
+                // بعد الانتهاء من النقر، قم بتحديث نص الزر والعداد
+                holder.btn_count.text = counterr.toString()
+                holder.tv_count.text = counterr.toString()
                 holder.btn_count.setTextColor(Color.BLUE)
-                0
+            } else {
+                // عندما يصل العداد إلى العدد المكتوب، لن يتم زيادة العداد بعد ذلك
+                // يمكنك تنفيذ سياسة خاصة للتعامل مع هذه الحالة هنا
             }
-        })
+        }
+
+
+
 
 
     }
@@ -79,4 +94,34 @@ class VPagerAdapter(val con: Context, private var zeker_list:List<Zekr>, val fra
         this.fontFamily = font
         notifyDataSetChanged()
     }
+
+    fun convertWordToNumber(word: String): Int {
+        val numbers = listOf(
+            Pair("بَعْدَ السّلامِ مِنْ صَلاَةِ الفَجْرِ", 1),
+
+            Pair("اثنان", 2),
+            Pair("", 1),
+            Pair("سَبْعَ مَرّاتٍ", 7),
+            Pair("عشرَ مرَّات أَو مرَّةً واحدةً عندَ الكَسَل", 10),
+            Pair("مائةَ مرَّةٍ", 100),
+            Pair("مِائَةَ مَرَّةٍ فِي الْيَوْمِ", 100),
+            Pair("ثلاث مرَّاتٍ", 3),
+            Pair("يفعلُ ذلك ثلاثَ مرَّاتٍ", 3),
+            Pair("أربع", 4),
+            Pair("ثلاثاً", 3),
+            Pair("ثلاثَ مرَّاتٍ والثَّالِثَةُ يَجْهَرُ بها ويَمُدُّ بها صَوتَهُ يقولُ: [رَبِّ الْمَلاَئِكَةِ وَالرُّوحِ]", 3),
+            Pair("ثلاثاً وثلاثين", 33),
+            Pair("ثلاثاً وثلاثين", 33),
+            Pair("أربعاً وثلاثينَ", 34),
+            Pair("سَبْعَ مَرّاتٍ", 7),
+            Pair("سبع مرات", 7),
+            Pair("أربعَ مَرَّاتٍ", 4),
+            Pair("عشرَ مرَّاتٍ", 10),
+            Pair("عَشْرَ مَرّاتٍ بَعْدَ صَلاةِ الْمَغْرِبِ وَالصُّبْحِ",10)
+            // استكمل الأعداد الباقية حسب حاجتك
+        )
+
+        return numbers.firstOrNull { it.first == word }?.second ?: 0
+    }
+
 }

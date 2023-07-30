@@ -61,12 +61,15 @@ class FirstFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        // استرداد إعدادات الخط من SharedPreferences
         val sharedPref = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
-
         val fontSize = sharedPref.getInt("font_size", 14)
+
+        // إنشاء ViewModel للإعدادات
+        settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
         settingsViewModel.fontSize = fontSize
 
+        // تحديث الـ Adapter ليعرض الخط المحدد
         zekertypesAdapter.notifyDataSetChanged()
     }
 
@@ -74,11 +77,22 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        // إنشاء ViewModel للإعدادات
         settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+
+        // تهيئة الخطوط المختلفة
         initFonts()
+
+        // إعداد RecyclerView و Adapter
         setUpRv()
+
+        // إعداد قائمة الخيارات في القائمة العلوية
         menu_item()
+
+        // التعامل مع حدث النقر على عنصر في الـ Adapter
         adapterOnClick()
+
+        // تحديد الخط المحدد وتغيير الخط عند الحاجة
         specifyFont()
 
     }
@@ -162,16 +176,16 @@ class FirstFragment : Fragment() {
                     R.id.action_theme -> {
 
 
-                        val prefs = SharedPref(requireContext())
-                        val isDark = prefs.getThemeStatePref()
-                        prefs.saveThemeStatePref(!isDark)
-
-                        if(isDark){
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                        }
-                        else{
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                        }
+//                        val prefs = SharedPref(requireContext())
+//                        val isDark = prefs.getThemeStatePref()
+//                        prefs.saveThemeStatePref(!isDark)
+//
+//                        if(isDark){
+//                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//                        }
+//                        else{
+//                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//                        }
                     }
 
                 }

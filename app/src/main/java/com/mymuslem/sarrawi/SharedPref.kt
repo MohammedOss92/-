@@ -21,7 +21,7 @@ class  SharedPref(var con: Context) {
 //        return pref.getBoolean("is_dark_mode", false)
 //    }
     private val sharedPreferences =
-    con.getSharedPreferences("MyPrefs", AppCompatActivity.MODE_PRIVATE)
+    con.getSharedPreferences("MyPrefss", AppCompatActivity.MODE_PRIVATE)
 
     fun saveThemeStatePref(isDark: Boolean) {
         val editor = sharedPreferences.edit()

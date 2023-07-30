@@ -138,17 +138,29 @@ class FragmentSetting : Fragment() {
         }
 
 
+        settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
 
+        // SeekBar and TextView initialization
+
+        // Get the current font size and night mode state from SharedPreferences
+        fontSizeSeekBar.progress = fontSize.coerceIn(12, 40)
+
+        // Set the font size and typeface for TextView
+        tvSeekBarValue.text = fontSizetvSeekBarValue.toString()
+        settingsViewModel.fontSize = fontSizetvSeekBarValue
+        tv_Size.textSize = settingsViewModel.fontSize.toFloat()
 
         nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 // حفظ حالة الوضع الليلي في SharedPref
                 sh_pref.saveThemeStatePref(true)
+                saveFontSettings(settingsViewModel.fontSize)
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 // حفظ حالة الوضع الليلي في SharedPref
                 sh_pref.saveThemeStatePref(false)
+                saveFontSettings(settingsViewModel.fontSize)
             }
         }
         initFonts()

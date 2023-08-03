@@ -17,6 +17,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.mymuslem.sarrawi.adapter.TypefaceChangeListener
 import com.mymuslem.sarrawi.adapter.ZekerTypes_Adapter
 import com.mymuslem.sarrawi.databinding.FragmentFirstBinding
@@ -49,6 +54,9 @@ class FirstFragment : Fragment() {
 
     private lateinit var settingsViewModel: SettingsViewModel
 
+    var clickCount = 0
+    var mInterstitialAd: InterstitialAd?=null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,6 +88,7 @@ class FirstFragment : Fragment() {
         // إنشاء ViewModel للإعدادات
         settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
 
+        InterstitialAd_fun()
         // تهيئة الخطوط المختلفة
         initFonts()
 
@@ -97,6 +106,10 @@ class FirstFragment : Fragment() {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
 
     override fun onDestroyView() {
@@ -107,6 +120,19 @@ class FirstFragment : Fragment() {
     private fun adapterOnClick() {
 
         zekertypesAdapter.onItemClick = {ID->
+
+            clickCount++
+            if (clickCount >= 4) {
+// بمجرد أن يصل clickCount إلى 4، اعرض الإعلان
+                if (mInterstitialAd != null) {
+                    mInterstitialAd?.show(requireActivity())
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.")
+                }
+                clickCount = 0 // اعيد قيمة المتغير clickCount إلى الصفر بعد عرض الإعلان
+
+            }
+
             val direction = FirstFragmentDirections.actionFirsFragmentToFragmentViewPager(ID)
                 findNavController().navigate(direction)
             Log.d("MyApp", "$ID")
@@ -173,7 +199,7 @@ class FirstFragment : Fragment() {
 
                 when(menuItem.itemId){
 
-                    R.id.action_theme -> {
+//                    R.id.action_theme -> {
 
 
 //                        val prefs = SharedPref(requireContext())
@@ -186,7 +212,7 @@ class FirstFragment : Fragment() {
 //                        else{
 //                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 //                        }
-                    }
+//                    }
 
                 }
                 return true
@@ -226,6 +252,34 @@ class FirstFragment : Fragment() {
         val editor = sp.edit()
         editor.putInt("font", fontIndex)
         editor.apply()
+    }
+
+    fun InterstitialAd_fun (){
+
+
+        MobileAds.initialize(requireActivity()) { initializationStatus ->
+            // do nothing on initialization complete
+        }
+
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(
+            requireActivity(),
+            "ca-app-pub-1895204889916566/9786749620",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    Log.i("onAdLoadedL", "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.d("onAdLoadedF", loadAdError.toString())
+                    mInterstitialAd = null
+                }
+            }
+        )
     }
 
 }

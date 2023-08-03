@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ScrollView
@@ -9,7 +10,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
@@ -60,8 +61,8 @@
                     android:id="@+id/button1"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
                     android:background="@drawable/buttonshape"
                     android:shadowColor="#A8A8A8"
                     android:shadowDx="0"
@@ -71,10 +72,22 @@
                     android:textColor="#FFFFFF"
                     android:textSize="16sp" />
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_below="@id/button1" />
+
             </RelativeLayout>
 
         </LinearLayout>
 
 
     </ScrollView>
+
+<!--    <include-->
+<!--        layout="@layout/banner_ads"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/scrollView" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

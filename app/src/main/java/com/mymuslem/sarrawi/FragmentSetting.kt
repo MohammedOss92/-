@@ -13,10 +13,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.mymuslem.sarrawi.adapter.TypefaceChangeListener
 import com.mymuslem.sarrawi.adapter.ZekerTypes_Adapter
 import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
-
 
 
 
@@ -47,11 +47,15 @@ class FragmentSetting : Fragment() {
     private var font7: Typeface? = null
     private var Ffont: Typeface? = null
 
+
+
+
     // ViewModel
     private lateinit var settingsViewModel: SettingsViewModel
 
     // Shared Preferences
     private val sharedPref by lazy { requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE) }
+
 
 
 
@@ -163,6 +167,8 @@ class FragmentSetting : Fragment() {
                 saveFontSettings(settingsViewModel.fontSize)
             }
         }
+
+
         initFonts()
         specifyFont()
 

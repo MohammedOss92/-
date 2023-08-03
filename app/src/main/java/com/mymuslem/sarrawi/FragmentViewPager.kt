@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.mymuslem.sarrawi.adapter.VPagerAdapter
 import com.mymuslem.sarrawi.adapter.ZekerTypes_Adapter
 import com.mymuslem.sarrawi.db.viewModel.SettingsViewModel
@@ -35,6 +37,8 @@ class FragmentViewPager : Fragment() {
     private var font6: Typeface? = null
     private var font7: Typeface? = null
     private var Ffont: Typeface? = null
+    var adView: AdView?=null
+
     private lateinit var settingsViewModel: SettingsViewModel
     private val adapter by lazy { VPagerAdapter(requireContext(), zeker_list, this, Ffont) }
 
@@ -59,6 +63,8 @@ class FragmentViewPager : Fragment() {
             val currentPosition = view_pager2!!.currentItem ?: 0
             view_pager2!!.currentItem = currentPosition + 1
         }
+        adView= rootView.findViewById(R.id.adView)
+        adView?.loadAd(AdRequest.Builder().build())  // تحميل الإعلان
 
         zekerViewModel.getAllZeker(argsId).observe(viewLifecycleOwner) { updatedZekerList ->
             zeker_list.clear()

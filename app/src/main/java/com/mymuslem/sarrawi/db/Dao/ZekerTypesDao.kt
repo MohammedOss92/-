@@ -19,4 +19,9 @@ interface ZekerTypesDao {
 //    @Insert
 //    suspend fun insert_zekerTypes (zekerTypes: ZekerTypes)
 
+
+    @Query("SELECT * FROM one WHERE ID LIKE :searchQuery " +
+            "OR Name_Filter LIKE :searchQuery")
+    fun searchZekerTypes(searchQuery: String): LiveData<List<Letters>>
+
 }

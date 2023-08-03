@@ -8,10 +8,12 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
@@ -35,7 +37,7 @@ import kotlinx.coroutines.launch
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class FirstFragment : Fragment(), SearchView.OnQueryTextListener  {
 
     lateinit var _binding: FragmentFirstBinding
     private val binding get() = _binding!!
@@ -193,6 +195,28 @@ class FirstFragment : Fragment() {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 // Add menu items here
                 menuInflater.inflate(R.menu.first_frag_menu, menu)
+
+                val search = menu?.findItem(R.id.menu_search)
+                val searchView = search?.actionView as androidx.appcompat.widget.SearchView
+
+                searchView.setOnQueryTextListener(object: androidx.appcompat.widget.
+                SearchView.OnQueryTextListener{
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        if (query != null) {
+
+                            searchDatabase(query)
+                        }
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        if (newText != null) {
+                            searchDatabase(newText)
+                        }
+                        return true
+                    }
+
+                })
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -280,6 +304,38 @@ class FirstFragment : Fragment() {
                 }
             }
         )
+    }
+
+    private fun searchDatabase(query: String) {
+        val searchQuery = "%$query%"
+
+
+//        adapter = NoteAdapter(this@MainActivity,onItemClick,onItemDelete)
+
+        zekerTypesViewModel.SearchViewModel(searchQuery).observe(requireActivity(), Observer {
+
+            zekertypesAdapter.setLetters(it)
+        })
+
+
+    }
+
+
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if(query != null){
+            val formattedQuery = "<font color='#FF0000'>$query</font>" // تغيير لون الكلمة إلى اللون الأحمر (#FF0000)
+            searchDatabase(formattedQuery)
+            searchDatabase(query)
+        }
+        return true
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if(query != null){
+            searchDatabase(query)
+        }
+        return true
     }
 
 }

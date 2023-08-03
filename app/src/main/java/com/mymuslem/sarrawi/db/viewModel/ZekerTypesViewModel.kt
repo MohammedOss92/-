@@ -19,6 +19,8 @@ class ZekerTypesViewModel constructor(application : Application) : ViewModel() {
 
     fun getAllZekerTypes(): LiveData<List<Letters>> = zekerTypesRepository.getAllZekerTypes()
 
+    fun SearchViewModel(searchQuery: String): LiveData<List<Letters>> = zekerTypesRepository.searchRepo(searchQuery)
+
     // update msg_table items favorite state
     fun update_fav(id: Int,state:Int) = viewModelScope.launch {
         zekerTypesRepository.update_fav(id,state)

@@ -107,4 +107,9 @@ class ZekerTypes_Adapter(val con: Context,private val fragment: Fragment,var fon
         notifyDataSetChanged()
     }
 
+    fun setLetters(zekerTypes_list:List<Letters>){
+        this.zekerTypes_list = zekerTypes_list
+        notifyDataSetChanged()
+    }
+
 }

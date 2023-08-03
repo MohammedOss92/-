@@ -49,4 +49,8 @@ class ZekerTypesRepository(app:Application) {
     suspend fun update_fav(id: Int,state:Int) {
         zekerTypesDao.update_fav(id,state)
     }
+
+    fun searchRepo(searchQuery: String): LiveData<List<Letters>> {
+        return zekerTypesDao.searchZekerTypes(searchQuery)
+    }
 }
